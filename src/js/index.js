@@ -16,7 +16,8 @@ d_ = (perc) => {
   return 0.5 * (1 - Math.cos(theta / 2));
 }
 
-d = (perc) => {
+
+export const d = (perc) => {
   if (perc > 0.5) return 1 - d_(1 - perc);
   return d_(perc);
 }
