@@ -1,6 +1,13 @@
+//@ts-check
 
-
-frec = (v) => {
+/**
+ * A fair approximation of the inverse function of x -> x-sin(x)
+ * See: https://math.stackexchange.com/a/3653155/1009
+ * 
+ * @param {number} v 
+ * @returns {number}
+ */
+const frec = (v) => {
   const t = Math.pow(6 * v, 1 / 3);
   const t2 = t * t;
   const t4 = t2 * t2;
@@ -11,19 +18,40 @@ frec = (v) => {
   );
 }
 
-d_ = (perc) => {
+/**
+ * A first approximation.
+ * @param {number} perc Percentage value, within [0,1] interval.
+ * @returns {number}
+ */
+const d_ = function(perc) {
   const theta = frec(perc * 2 * Math.PI);
   return 0.5 * (1 - Math.cos(theta / 2));
 }
 
 
-export const d = (perc) => {
+/**
+ * A fair approximation of the coefficient to use to compute the circle stripe width from a percentage value.
+ * @param {number} perc Percentage value, within [0,1] interval.
+ * @returns {number}
+ */
+ export const correction = function(perc) {
   if (perc > 0.5) return 1 - d_(1 - perc);
   return d_(perc);
 }
 
 
-
+/**
+ * 
+ * @param {*} svg 
+ * @param {*} id 
+ * @param {*} width 
+ * @param {*} percentages 
+ * @param {*} colors 
+ * @param {*} orientation 
+ * @param {*} centerX 
+ * @param {*} centerY 
+ * @param {*} withCorrection 
+ */
 export const makePattern = function (
   svg,
   id,
@@ -53,9 +81,9 @@ export const makePattern = function (
     const per = percentages[i] * 0.01;
     pattern
       .append("rect")
-      .attr("x", width * (withCorrection ? d(cumPer) : cumPer))
+      .attr("x", width * (withCorrection ? correction(cumPer) : cumPer))
       .attr("y", 0)
-      .attr("width", width * (withCorrection ? d(per) : per))
+      .attr("width", width * (withCorrection ? correction(per) : per))
       .attr("height", width)
       .attr("fill", colors[i]);
     cumPer += per;
