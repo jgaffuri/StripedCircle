@@ -1,0 +1,5 @@
+# Dependency tree
+package-lock.json
+# Dependency directories
+/node_modules/
+# Dev version

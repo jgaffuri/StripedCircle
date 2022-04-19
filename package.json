@@ -3,7 +3,9 @@
   "version": "0.0.1",
   "description": "",
   "keywords": [
-    "pie chart", "circle", "stripe"
+    "pie chart",
+    "circle",
+    "stripe"
   ],
   "homepage": "https://github.com/jgaffuri/StripedCircle",
   "author": "Julien Gaffuri",
