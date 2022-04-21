@@ -41,16 +41,16 @@ const d_ = function(perc) {
 
 
 /**
+ * Make a striped pattern.
  * 
- * @param {*} svg 
- * @param {*} id 
- * @param {*} width 
- * @param {*} percentages 
- * @param {*} colors 
- * @param {*} orientation 
- * @param {*} centerX 
- * @param {*} centerY 
- * @param {*} withCorrection 
+ * @param {object} svg The d3 SVG object
+ * @param {string} id The id of the striped pattern. The pattern should then be used with "url(#id)"
+ * @param {number} width The width of the pattern, typically the diameter.
+ * @param {Array.<number>} percentages The percentages, within [0,100], ordered.
+ * @param {Array.<string>} colors The colors, in the same order as the percentages.
+ * @param {number} orientation The orientation of the stripes, in degree. 0 is vertical.
+ * @param {Array.<number>} rotationPos The [x,y] position of the rotation, typically the circle center position. 
+ * @param {boolean} withCorrection 
  */
 export const makePattern = function (
   svg,
@@ -58,9 +58,8 @@ export const makePattern = function (
   width,
   percentages,
   colors,
-  orientation,
-  centerX,
-  centerY,
+  orientation = 0,
+  rotationPos = null,
   withCorrection = true
 ) {
   let defs = svg.select("defs");
@@ -72,9 +71,10 @@ export const makePattern = function (
     .attr("patternUnits", "objectBoundingBox")
     .attr("width", 1)
     .attr("height", 1)
-    .attr(
+    if(rotationPos)
+    pattern.attr(
       "patternTransform",
-      "rotate(" + orientation + "," + centerX + "," + centerY + ")"
+      "rotate(" + orientation + "," + rotationPos[0] + "," + rotationPos[1] + ")"
     );
   let cumPer = 0;
   for (let i = 0; i < percentages.length; i++) {
