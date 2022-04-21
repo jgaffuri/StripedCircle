@@ -23,7 +23,7 @@ const frec = (v) => {
  * @param {number} perc Percentage value, within [0,1] interval.
  * @returns {number}
  */
-const d_ = function(perc) {
+const d_ = function (perc) {
   const theta = frec(perc * 2 * Math.PI);
   return 0.5 * (1 - Math.cos(theta / 2));
 }
@@ -34,7 +34,7 @@ const d_ = function(perc) {
  * @param {number} perc Percentage value, within [0,1] interval.
  * @returns {number}
  */
- export const correction = function(perc) {
+export const correction = function (perc) {
   if (perc > 0.5) return 1 - d_(1 - perc);
   return d_(perc);
 }
@@ -62,20 +62,29 @@ export const makePattern = function (
   rotationPos = null,
   withCorrection = true
 ) {
+
+  //get defs elements
   let defs = svg.select("defs");
   if (defs.size() === 0) defs = svg.append("defs");
 
+  //build pattern element
   const pattern = defs
     .append("pattern")
     .attr("id", id)
     .attr("patternUnits", "objectBoundingBox")
     .attr("width", 1)
     .attr("height", 1)
-    if(rotationPos)
+
+  //set orientation
+  if (orientation) {
+    rotationPos = rotationPos || [0, 0]
     pattern.attr(
       "patternTransform",
       "rotate(" + orientation + "," + rotationPos[0] + "," + rotationPos[1] + ")"
     );
+  }
+
+  //specify stripes
   let cumPer = 0;
   for (let i = 0; i < percentages.length; i++) {
     const per = percentages[i] * 0.01;
