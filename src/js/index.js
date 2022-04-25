@@ -1,5 +1,5 @@
 //@ts-check
-import { select } from "d3"
+import {select} from 'd3-selection';
 
 /**
  * A fair approximation of the inverse function of x -> x-sin(x)
@@ -42,21 +42,21 @@ export const correction = function (perc) {
 
 
 /**
- * Make a striped pattern.
+ * Make a striped pattern for a circular symbol.
  * 
  * @param {string} svgId The id of the SVG where to define the patterns.
  * @param {string} id The id of the striped pattern. The pattern should then be used with "url(#id)"
- * @param {number} width The width of the pattern, typically the diameter.
+ * @param {number} size The size of the symbol, typically the circle diameter, in pixels.
  * @param {Array.<number>} percentages The percentages, within [0,100], ordered.
  * @param {Array.<string>} colors The colors, in the same order as the percentages.
- * @param {number} orientation The orientation of the stripes, in degree. 0 is vertical.
+ * @param {number} orientation The orientation of the stripes, in degree. 0 is vertical. 45 shows NE direction.
  * @param {Array.<number>} rotationPos The [x,y] position of the rotation, typically the circle center position. 
  * @param {boolean} withCorrection 
  */
-export const makePattern = function (
+export const makeCircleStripePattern = function (
   svgId,
   id,
-  width,
+  size,
   percentages,
   colors,
   orientation = 0,
@@ -90,14 +90,75 @@ export const makePattern = function (
 
   //specify stripes
   let cumPer = 0;
+  const corr = withCorrection ? correction : x => x;
+  for (let i = 0; i < percentages.length; i++) {
+    const per = percentages[i] * 0.01;
+    const x = size * corr(cumPer)
+    const w = size * corr(cumPer + per) - corr(cumPer)
+    pattern
+      .append("rect")
+      .attr("x", x)
+      .attr("y", 0)
+      .attr("width", w)
+      .attr("height", size)
+      .attr("fill", colors[i]);
+    cumPer += per;
+  }
+}
+
+
+/**
+ * Make a striped pattern for a region.
+ * 
+ * @param {string} svgId The id of the SVG where to define the patterns.
+ * @param {string} id The id of the striped pattern. The pattern should then be used with "url(#id)"
+ * @param {number} width The width of the stripes stack, in pixel.
+ * @param {Array.<number>} percentages The percentages, within [0,100], ordered.
+ * @param {Array.<string>} colors The colors, in the same order as the percentages.
+ * @param {number} orientation The orientation of the stripes, in degree. 0 is vertical. 45 shows NE direction.
+ */
+export const makePolygonStripePattern = function (svgId, id, width, percentages, colors, orientation = 0) {
+
+  //get SVG element
+  const svg = select("#" + svgId);
+
+  //get defs elements
+  let defs = svg.select("defs");
+  if (defs.size() === 0) defs = svg.append("defs");
+
+  //build pattern element
+  const pattern = defs
+    .append("pattern")
+    .attr("id", id)
+    .attr("x", "0")
+    .attr("y", "0")
+    .attr("width", width)
+    .attr("height", 1)
+    .attr("patternUnits", "userSpaceOnUse");
+
+  if (orientation)
+    pattern.attr("patternTransform", "rotate(" + orientation + ")");
+
+  //background
+  pattern
+    .append("rect")
+    .attr("x", 0)
+    .attr("y", 0)
+    .attr("width", width)
+    .attr("height", 1)
+    .style("stroke", "none")
+    .style("fill", "lightgray");
+
+  //specify stripes
+  let cumPer = 0;
   for (let i = 0; i < percentages.length; i++) {
     const per = percentages[i] * 0.01;
     pattern
       .append("rect")
-      .attr("x", width * (withCorrection ? correction(cumPer) : cumPer))
+      .attr("x", width * cumPer)
       .attr("y", 0)
-      .attr("width", width * (withCorrection ? correction(per) : per))
-      .attr("height", width)
+      .attr("width", width * per)
+      .attr("height", 1)
       .attr("fill", colors[i]);
     cumPer += per;
   }
