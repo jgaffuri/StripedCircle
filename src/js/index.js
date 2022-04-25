@@ -53,7 +53,7 @@ export const correction = function (perc) {
  * @param {Array.<number>} rotationPos The [x,y] position of the rotation, typically the circle center position. 
  * @param {boolean} withCorrection 
  */
-export const makeCircleStripePattern = function (
+ makeCircleStripePattern = function (
   svgId,
   id,
   size,
@@ -92,21 +92,6 @@ export const makeCircleStripePattern = function (
     );
   }
 
-  //set orientation
-  if (orientation) {
-    rotationPos = rotationPos || [0, 0];
-    pattern.attr(
-      "patternTransform",
-      "rotate(" +
-        orientation +
-        "," +
-        rotationPos[0] +
-        "," +
-        rotationPos[1] +
-        ")"
-    );
-  }
-
   //specify stripes
   let cumPer = 0,
     x0 = 0;
@@ -115,7 +100,7 @@ export const makeCircleStripePattern = function (
     cumPer += percentages[i] * 0.01;
     if (cumPer >= 1) cumPer = 1;
     const x1 = size * corr(cumPer);
-    console.log(cumPer, corr(cumPer));
+    //console.log(cumPer, corr(cumPer));
     pattern
       .append("rect")
       .attr("x", x0)
@@ -126,7 +111,6 @@ export const makeCircleStripePattern = function (
     x0 = x1;
   }
 }
-
 
 /**
  * Make a striped pattern for a region.
