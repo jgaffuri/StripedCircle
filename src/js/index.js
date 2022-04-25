@@ -1,5 +1,5 @@
 //@ts-check
-import {select} from 'd3-selection';
+import { select } from 'd3-selection';
 
 /**
  * A fair approximation of the inverse function of x -> x-sin(x)
@@ -94,7 +94,7 @@ export const makeCircleStripePattern = function (
   for (let i = 0; i < percentages.length; i++) {
     const per = percentages[i] * 0.01;
     const x = size * corr(cumPer)
-    const w = size * corr(cumPer + per) - corr(cumPer)
+    const w = size * (corr(cumPer + per) - corr(cumPer))
     pattern
       .append("rect")
       .attr("x", x)
