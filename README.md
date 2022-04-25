@@ -17,7 +17,6 @@ Javascript library to draw nice striped circle symbols to show numerical proport
 
 See few examples [here](https://observablehq.com/collection/@jgaffuri/striped-circles).
 
-![Election map striped circle](https://raw.githubusercontent.com/jgaffuri/StripedCircle/main/doc/img/carte_tour1.png)
+[![Election map striped circle](https://raw.githubusercontent.com/jgaffuri/StripedCircle/main/doc/img/carte_tour1.png)](https://observablehq.com/@jgaffuri/election-map?collection=@jgaffuri/striped-circles?collection=@jgaffuri/striped-circles)
 
-![Election map striped circle](https://raw.githubusercontent.com/jgaffuri/StripedCircle/main/doc/img/carte_tour2.png)
-
+[![Election map striped circle](https://raw.githubusercontent.com/jgaffuri/StripedCircle/main/doc/img/carte_tour2.png)](https://observablehq.com/@jgaffuri/election-map-as-striped-circles-2?collection=@jgaffuri/striped-circles)
