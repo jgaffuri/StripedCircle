@@ -53,7 +53,7 @@ export const correction = function (perc) {
  * @param {Array.<number>} rotationPos The [x,y] position of the rotation, typically the circle center position. 
  * @param {boolean} withCorrection 
  */
- makeCircleStripePattern = function (
+ export const makeCircleStripePattern = function (
   svgId,
   id,
   size,
