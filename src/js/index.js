@@ -1,4 +1,5 @@
 //@ts-check
+import { select } from "d3"
 
 /**
  * A fair approximation of the inverse function of x -> x-sin(x)
@@ -43,7 +44,7 @@ export const correction = function (perc) {
 /**
  * Make a striped pattern.
  * 
- * @param {object} svg The d3 SVG object
+ * @param {string} svgId The id of the SVG where to define the patterns.
  * @param {string} id The id of the striped pattern. The pattern should then be used with "url(#id)"
  * @param {number} width The width of the pattern, typically the diameter.
  * @param {Array.<number>} percentages The percentages, within [0,100], ordered.
@@ -53,7 +54,7 @@ export const correction = function (perc) {
  * @param {boolean} withCorrection 
  */
 export const makePattern = function (
-  svg,
+  svgId,
   id,
   width,
   percentages,
@@ -62,6 +63,9 @@ export const makePattern = function (
   rotationPos = null,
   withCorrection = true
 ) {
+
+  //get SVG element
+  const svg = select("#" + svgId);
 
   //get defs elements
   let defs = svg.select("defs");
