@@ -63,7 +63,6 @@ export const makeCircleStripePattern = function (
   rotationPos = null,
   withCorrection = true
 ) {
-
   //get SVG element
   const svg = select("#" + svgId);
 
@@ -71,38 +70,60 @@ export const makeCircleStripePattern = function (
   let defs = svg.select("defs");
   if (defs.size() === 0) defs = svg.append("defs");
 
-  //build pattern element
   const pattern = defs
     .append("pattern")
     .attr("id", id)
     .attr("patternUnits", "objectBoundingBox")
     .attr("width", 1)
-    .attr("height", 1)
+    .attr("height", 1);
 
   //set orientation
   if (orientation) {
-    rotationPos = rotationPos || [0, 0]
+    rotationPos = rotationPos || [0, 0];
     pattern.attr(
       "patternTransform",
-      "rotate(" + orientation + "," + rotationPos[0] + "," + rotationPos[1] + ")"
+      "rotate(" +
+        orientation +
+        "," +
+        rotationPos[0] +
+        "," +
+        rotationPos[1] +
+        ")"
+    );
+  }
+
+  //set orientation
+  if (orientation) {
+    rotationPos = rotationPos || [0, 0];
+    pattern.attr(
+      "patternTransform",
+      "rotate(" +
+        orientation +
+        "," +
+        rotationPos[0] +
+        "," +
+        rotationPos[1] +
+        ")"
     );
   }
 
   //specify stripes
-  let cumPer = 0;
-  const corr = withCorrection ? correction : x => x;
+  let cumPer = 0,
+    x0 = 0;
+  const corr = withCorrection ? correction : (x) => x;
   for (let i = 0; i < percentages.length; i++) {
-    const per = percentages[i] * 0.01;
-    const x = size * corr(cumPer)
-    const w = size * (corr(cumPer + per) - corr(cumPer))
+    cumPer += percentages[i] * 0.01;
+    if (cumPer >= 1) cumPer = 1;
+    const x1 = size * corr(cumPer);
+    console.log(cumPer, corr(cumPer));
     pattern
       .append("rect")
-      .attr("x", x)
+      .attr("x", x0)
       .attr("y", 0)
-      .attr("width", w)
+      .attr("width", x1 - x0)
       .attr("height", size)
       .attr("fill", colors[i]);
-    cumPer += per;
+    x0 = x1;
   }
 }
 
