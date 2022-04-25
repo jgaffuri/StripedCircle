@@ -6,6 +6,8 @@
 
 Javascript library to draw nice striped circle symbols to show numerical proportions on maps or other visualisations. For more information on *striped circle symbol*, see this [here](https://observablehq.com/@jgaffuri/striped-circle)
 
+![striped circle symbol](https://raw.githubusercontent.com/jgaffuri/StripedCircle/main/doc/img/stripedcircles.png)
+
 ## Installation
 
 - **Node.js**: With ``npm install stripedcircle``.
@@ -14,4 +16,8 @@ Javascript library to draw nice striped circle symbols to show numerical proport
 ## Utilisation
 
 See few examples [here](https://observablehq.com/collection/@jgaffuri/striped-circles).
+
+![Election map striped circle](https://raw.githubusercontent.com/jgaffuri/StripedCircle/main/doc/img/carte_tour1.png)
+
+![Election map striped circle](https://raw.githubusercontent.com/jgaffuri/StripedCircle/main/doc/img/carte_tour2.png)
 
