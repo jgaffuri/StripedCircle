@@ -4,7 +4,7 @@
 ![npm](https://img.shields.io/npm/v/stripedcircle)
 ![license](https://img.shields.io/badge/license-EUPL-success)
 
-Javascript library to draw striped circle symbols to show numerical proportions on maps or other visualisations. For more information on *striped circle symbol*, see this [here](https://observablehq.com/@jgaffuri/striped-circle)
+Javascript library to draw striped circle symbols for showing numerical proportions on maps or other visualisations. For more information on *striped circle symbol*, see this [here](https://observablehq.com/@jgaffuri/striped-circle)
 
 ![striped circle symbol](https://raw.githubusercontent.com/jgaffuri/StripedCircle/main/doc/img/stripedcircles.png)
 
