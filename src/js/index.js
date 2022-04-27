@@ -109,7 +109,7 @@ export const correction = function (perc) {
       .attr("width", x1 - x0)
       .attr("height", size)
       .attr("fill", colors[i])
-      .attr("code", id+"_"+i);
+      .attr("code", "spc_" + i);
       x0 = x1;
   }
 }
@@ -168,7 +168,7 @@ export const makePolygonStripePattern = function (svgId, id, width, percentages,
       .attr("width", width * per)
       .attr("height", 1)
       .attr("fill", colors[i])
-      .attr("code", id+"_"+i);
+      .attr("code", "spc_" + i);
     cumPer += per;
   }
 }
