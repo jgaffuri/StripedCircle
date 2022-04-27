@@ -1,6 +1,6 @@
 {
   "name": "stripedcircle",
-  "version": "0.9.7",
+  "version": "0.9.8",
   "description": "Everything to draw nice striped circle symbols to show numerical proportions on maps or other visualisations",
   "keywords": [
     "pie chart",

@@ -101,14 +101,16 @@ export const correction = function (perc) {
     if (cumPer >= 1) cumPer = 1;
     const x1 = size * corr(cumPer);
     //console.log(cumPer, corr(cumPer));
+
     pattern
       .append("rect")
       .attr("x", x0)
       .attr("y", 0)
       .attr("width", x1 - x0)
       .attr("height", size)
-      .attr("fill", colors[i]);
-    x0 = x1;
+      .attr("fill", colors[i])
+      .attr("code", id+"_"+i);
+      x0 = x1;
   }
 }
 
@@ -121,8 +123,9 @@ export const correction = function (perc) {
  * @param {Array.<number>} percentages The percentages, within [0,100], ordered.
  * @param {Array.<string>} colors The colors, in the same order as the percentages.
  * @param {number} orientation The orientation of the stripes, in degree. 0 is vertical. 45 shows NE direction.
+ * @param {string} defaultColor A default color, for the remaining stripes in case data do not sum up to 100%.
  */
-export const makePolygonStripePattern = function (svgId, id, width, percentages, colors, orientation = 0) {
+export const makePolygonStripePattern = function (svgId, id, width, percentages, colors, orientation = 0, defaultColor = "lightgray") {
 
   //get SVG element
   const svg = select("#" + svgId);
@@ -152,7 +155,7 @@ export const makePolygonStripePattern = function (svgId, id, width, percentages,
     .attr("width", width)
     .attr("height", 1)
     .style("stroke", "none")
-    .style("fill", "lightgray");
+    .style("fill", defaultColor);
 
   //specify stripes
   let cumPer = 0;
@@ -164,7 +167,8 @@ export const makePolygonStripePattern = function (svgId, id, width, percentages,
       .attr("y", 0)
       .attr("width", width * per)
       .attr("height", 1)
-      .attr("fill", colors[i]);
+      .attr("fill", colors[i])
+      .attr("code", id+"_"+i);
     cumPer += per;
   }
 }
