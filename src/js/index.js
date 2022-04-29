@@ -52,8 +52,9 @@ export const correction = function (perc) {
  * @param {number} orientation The orientation of the stripes, in degree. 0 is vertical. 45 shows NE direction.
  * @param {Array.<number>} rotationPos The [x,y] position of the rotation, typically the circle center position. 
  * @param {boolean} withCorrection 
+ * @param {number} minWidth The minimum width for a stripe. Stripes with widths below this value will not be shown.
  */
- export const makeCircleStripePattern = function (
+export const makeCircleStripePattern = function (
   svgId,
   id,
   size,
@@ -61,7 +62,8 @@ export const correction = function (perc) {
   colors,
   orientation = 0,
   rotationPos = null,
-  withCorrection = true
+  withCorrection = true,
+  minWidth=0
 ) {
   //get SVG element
   const svg = select("#" + svgId);
@@ -83,12 +85,12 @@ export const correction = function (perc) {
     pattern.attr(
       "patternTransform",
       "rotate(" +
-        orientation +
-        "," +
-        rotationPos[0] +
-        "," +
-        rotationPos[1] +
-        ")"
+      orientation +
+      "," +
+      rotationPos[0] +
+      "," +
+      rotationPos[1] +
+      ")"
     );
   }
 
@@ -97,20 +99,22 @@ export const correction = function (perc) {
     x0 = 0;
   const corr = withCorrection ? correction : (x) => x;
   for (let i = 0; i < percentages.length; i++) {
+
     cumPer += percentages[i] * 0.01;
     if (cumPer >= 1) cumPer = 1;
     const x1 = size * corr(cumPer);
-    //console.log(cumPer, corr(cumPer));
+    const w =  x1 - x0;
+    if (w <= minWidth) { x0=x1; continue }
 
     pattern
       .append("rect")
       .attr("x", x0)
       .attr("y", 0)
-      .attr("width", x1 - x0)
+      .attr("width", w)
       .attr("height", size)
       .attr("fill", colors[i])
       .attr("code", "spc_" + i);
-      x0 = x1;
+    x0 = x1;
   }
 }
 
@@ -124,8 +128,9 @@ export const correction = function (perc) {
  * @param {Array.<string>} colors The colors, in the same order as the percentages.
  * @param {number} orientation The orientation of the stripes, in degree. 0 is vertical. 45 shows NE direction.
  * @param {string} defaultColor A default color, for the remaining stripes in case data do not sum up to 100%.
+ * @param {number} minWidth The minimum width for a stripe. Stripes with widths below this value will not be shown.
  */
-export const makePolygonStripePattern = function (svgId, id, width, percentages, colors, orientation = 0, defaultColor = "lightgray") {
+export const makePolygonStripePattern = function (svgId, id, width, percentages, colors, orientation = 0, defaultColor = "lightgray", minWidth) {
 
   //get SVG element
   const svg = select("#" + svgId);
@@ -158,17 +163,18 @@ export const makePolygonStripePattern = function (svgId, id, width, percentages,
     .style("fill", defaultColor);
 
   //specify stripes
-  let cumPer = 0;
+  let cumW = 0;
   for (let i = 0; i < percentages.length; i++) {
-    const per = percentages[i] * 0.01;
+    const w = width * percentages[i] * 0.01;
+    if (w <= minWidth) { cumW += w; continue }
     pattern
       .append("rect")
-      .attr("x", width * cumPer)
+      .attr("x", cumW)
       .attr("y", 0)
-      .attr("width", width * per)
+      .attr("width", w)
       .attr("height", 1)
       .attr("fill", colors[i])
       .attr("code", "spc_" + i);
-    cumPer += per;
+    cumW += w;
   }
 }
