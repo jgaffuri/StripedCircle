@@ -63,7 +63,7 @@ export const makeCircleStripePattern = function (
   orientation = 0,
   rotationPos = null,
   withCorrection = true,
-  minWidth=0
+  minWidth = 0
 ) {
   //get SVG element
   const svg = select("#" + svgId);
@@ -103,8 +103,8 @@ export const makeCircleStripePattern = function (
     cumPer += percentages[i] * 0.01;
     if (cumPer >= 1) cumPer = 1;
     const x1 = size * corr(cumPer);
-    const w =  x1 - x0;
-    if (w <= minWidth) { x0=x1; continue }
+    const w = x1 - x0;
+    if (w <= minWidth) { x0 = x1; continue }
 
     pattern
       .append("rect")
